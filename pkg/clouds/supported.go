@@ -56,6 +56,11 @@ func GuessCloudForPath(path string) (kops.CloudProviderID, error) {
 		return kops.CloudProviderScaleway, nil
 	case strings.HasPrefix(path, "swift://"):
 		return kops.CloudProviderOpenstack, nil
+	case strings.HasPrefix(path, "r2://"):
+		if os.Getenv("HCLOUD_TOKEN") != "" {
+			return kops.CloudProviderHetzner, nil
+		}
+		fallthrough
 	case strings.HasPrefix(path, "s3://"):
 		if os.Getenv("HCLOUD_TOKEN") != "" {
 			return kops.CloudProviderHetzner, nil
